@@ -1,8 +1,6 @@
 package seminar1.realizations;
 
 import java.util.Iterator;
-import java.util.function.Consumer;
-
 import seminar1.collections.IStack;
 
 public class MyStack implements IStack<Integer> {
@@ -46,27 +44,19 @@ public class MyStack implements IStack<Integer> {
 
     @Override
     public Iterator<Integer> iterator() {
-        Iterator<Integer> it = new Iterator<Integer>() {
+        return new Iterator<Integer>() {
+            private int index = 0;
+
             @Override
             public boolean hasNext() {
-                return false;
+                return index < mTop;
             }
 
             @Override
             public Integer next() {
-                return null;
-            }
-
-            @Override
-            public void remove() {
-
-            }
-
-            @Override
-            public void forEachRemaining(Consumer action) {
-
+                if (!hasNext()) throw new NullPointerException();
+                return mArray[index++];
             }
         };
-        return null;
     }
 }
