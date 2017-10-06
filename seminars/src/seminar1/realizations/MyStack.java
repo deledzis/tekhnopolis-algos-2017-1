@@ -66,7 +66,7 @@ public class MyStack implements IStack<Integer> {
             public void forEachRemaining(Consumer action) {
 
             }
-        }
+        };
         return null;
     }
 }
