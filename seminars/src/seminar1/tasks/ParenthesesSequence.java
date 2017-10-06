@@ -27,7 +27,7 @@ public class ParenthesesSequence {
         char c;
         for (int i = 0; i < sequence.length(); i++) {
             c = sequence.charAt(i);
-            if (c == '(')
+            if (c == LEFT_PAREN)
                 stack.push(c);
             else if (!stack.isEmpty())
                 stack.pop();
