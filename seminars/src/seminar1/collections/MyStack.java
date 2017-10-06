@@ -1,2 +1,0 @@
-package seminar1;
-
