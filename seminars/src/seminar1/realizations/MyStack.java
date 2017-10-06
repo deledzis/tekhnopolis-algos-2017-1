@@ -3,15 +3,15 @@ package seminar1.realizations;
 import java.util.Iterator;
 import seminar1.collections.IStack;
 
-public class MyStack implements IStack<Integer> {
+public class MyStack implements IStack {
     private int mTop;
     private int mCapacity;
-    private int mArray[];
+    private Object mArray[];
 
     public MyStack(int capacity) {
         mTop = -1;
         mCapacity = capacity;
-        mArray = new int[capacity];
+        mArray = new Object[capacity];
     }
 
     private boolean isFull() {
@@ -24,16 +24,16 @@ public class MyStack implements IStack<Integer> {
     }
 
     @Override
-    public void push(Integer o) {
+    public void push(Object o) {
         if (isFull())
             return;
         mArray[++mTop] = o;
     }
 
     @Override
-    public Integer pop() {
+    public Object pop() {
         if (isEmpty())
-            return Integer.MIN_VALUE;
+            return null;
         return mArray[mTop--];
     }
     
@@ -43,8 +43,8 @@ public class MyStack implements IStack<Integer> {
     }
 
     @Override
-    public Iterator<Integer> iterator() {
-        return new Iterator<Integer>() {
+    public Iterator<Object> iterator() {
+        return new Iterator<Object>() {
             private int index = 0;
 
             @Override
@@ -53,7 +53,7 @@ public class MyStack implements IStack<Integer> {
             }
 
             @Override
-            public Integer next() {
+            public Object next() {
                 if (!hasNext()) throw new NullPointerException();
                 return mArray[index++];
             }
