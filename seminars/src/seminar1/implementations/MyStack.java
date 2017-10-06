@@ -1,9 +1,10 @@
-package seminar1.realizations;
+package seminar1.implementations;
 
 import java.util.Iterator;
 import seminar1.collections.IStack;
 
-public class MyStack implements IStack {
+public class MyStack<T> implements IStack {
+    // TODO make it auto-expansible
     private int mTop;
     private int mCapacity;
     private Object mArray[];
