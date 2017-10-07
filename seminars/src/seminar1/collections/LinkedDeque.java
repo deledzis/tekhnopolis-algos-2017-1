@@ -1,4 +1,4 @@
-package seminar1.collections;
+package collections;
 
 import java.util.Iterator;
 

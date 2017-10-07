@@ -1,15 +1,32 @@
-package seminar1;
-
-import seminar1.collections.IQueue;
-import seminar1.collections.IStack;
-import seminar1.collections.LinkedQueue;
-import seminar1.collections.LinkedStack;
-import seminar1.collections.TwoStackQueue;
+import collections.ArrayStack;
+import collections.LinkedStack;
 
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("LinkedStack");
+        System.out.println("=ArrayStack=");
+        ArrayStack<Character> astack = new ArrayStack<>();
+        for (int i = 0; i < 30; i++) {
+            astack.push((char) (i + 35));
+        }
+        astack.print();
+        astack.pop();
+        astack.print();
+        astack.push('n');
+        astack.print();
+        System.out.println(astack.peek());
+        System.out.println("=LinkedStack=");
+        LinkedStack<Character> lstack = new LinkedStack<>();
+        for (int i = 0; i < 30; i++) {
+            lstack.push((char) (i + 35));
+        }
+        lstack.print();
+        lstack.pop();
+        lstack.print();
+        lstack.push('n');
+        lstack.print();
+        System.out.println(lstack.peek());
+/*        System.out.println("LinkedStack");
         IStack<Integer> stack = new LinkedStack<>();
         for (int i = 0; i < 20; i++) {
             stack.push(i);
@@ -46,6 +63,6 @@ public class Main {
         }
         for (int i = 0; i < 30; i++) {
             System.out.print(queue.dequeue() + " ");
-        }
+        }*/
     }
 }

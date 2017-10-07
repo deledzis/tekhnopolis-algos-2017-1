@@ -1,11 +1,10 @@
-package seminar1.tasks;
+package tasks;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import seminar1.collections.ArrayStack;
-import seminar1.implementations.MyStack;
+import collections.LinkedStack;
 
 /**
  * 1. пустая строка — правильная скобочная последовательность;
@@ -28,7 +27,7 @@ public class ParenthesesSequenceExt {
 
     // sequence = "()()" | "(({}[]))[[[" | "{}" | ...
     private static boolean isBalanced(String sequence) {
-        ArrayStack<Character> stack = new ArrayStack<>();
+        LinkedStack<Character> stack = new LinkedStack<>();
         char c;
         for (int i = 0; i < sequence.length(); i++) {
             c = sequence.charAt(i);
@@ -36,17 +35,17 @@ public class ParenthesesSequenceExt {
                 stack.push(c);
             }
             else if (c == RIGHT_PAREN) {
-                if (stack.isEmpty() || (char) stack.pop() != LEFT_PAREN) {
+                if (stack.isEmpty() || stack.pop() != LEFT_PAREN) {
                     return false;
                 }
             }
             else if (c == RIGHT_BRACE) {
-                if (stack.isEmpty() || (char) stack.pop() != LEFT_BRACE) {
+                if (stack.isEmpty() || stack.pop() != LEFT_BRACE) {
                     return false;
                 }
             }
             else if (c == RIGHT_BRACKET) {
-                if (stack.isEmpty() || (char) stack.pop() != LEFT_BRACKET) {
+                if (stack.isEmpty() || stack.pop() != LEFT_BRACKET) {
                     return false;
                 }
             }

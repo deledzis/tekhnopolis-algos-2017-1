@@ -1,8 +1,8 @@
-package seminar1.collections;
+package collections;
 
 import java.util.Iterator;
 
-public class CyclicArrayQueue<Item> implements IQueue<Item> {
+public class CyclicArrayQueue<Item> implements collections.IQueue<Item> {
 
     private Item[] elementData;
 

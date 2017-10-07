@@ -1,8 +1,8 @@
-package seminar1.collections;
+package collections;
 
 import java.util.Iterator;
 
-public class CyclicArrayDeque<Item> implements IDeque<Item> {
+public class CyclicArrayDeque<Item> implements collections.IDeque<Item> {
 
     private Item[] elementData;
 

@@ -1,9 +1,9 @@
-package seminar1.collections;
+package collections;
 
 import java.util.Comparator;
 import java.util.Iterator;
 
-public class ArrayPriorityQueue<Key extends Comparable<Key>> implements IPriorityQueue<Key> {
+public class ArrayPriorityQueue<Key extends Comparable<Key>> implements collections.IPriorityQueue<Key> {
 
     private Key[] elementData;
     private Comparator<Key> comparator;

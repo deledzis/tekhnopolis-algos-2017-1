@@ -1,9 +1,9 @@
-package seminar1.collections;
+package collections;
 
 import java.util.Arrays;
 import java.util.Iterator;
 
-public class ArrayStack<Item> implements IStack<Item> {
+public class ArrayStack<Item> implements collections.IStack<Item> {
 
     private static final int DEFAULT_CAPACITY = 10;
 
@@ -15,7 +15,7 @@ public class ArrayStack<Item> implements IStack<Item> {
     public ArrayStack() {
         capacity = DEFAULT_CAPACITY;
         this.elementData = (Item[]) new Object[capacity];
-        size = -1;
+        size = 0;
     }
 
     @Override
@@ -23,7 +23,7 @@ public class ArrayStack<Item> implements IStack<Item> {
         if (isFull()) {
             grow();
         }
-        elementData[++size] = item;
+        elementData[size++] = item;
     }
 
     @Override
@@ -31,11 +31,25 @@ public class ArrayStack<Item> implements IStack<Item> {
         if (capacity / size > 4) {
             shrink();
         }
-        return null;
+        Item item = elementData[--size];
+        elementData[size] = null;
+        return item;
+    }
+
+    public Item peek() {
+        return elementData[size - 1];
+    }
+
+    public void print() {
+        System.out.print("Stack: ");
+        for (int i = 0; i < size; i++) {
+            System.out.print(elementData[i] + " ");
+        }
+        System.out.println();
     }
 
     private boolean isFull() {
-        return size() == capacity - 1;
+        return size() == capacity;
     }
 
     @Override
@@ -49,11 +63,11 @@ public class ArrayStack<Item> implements IStack<Item> {
     }
 
     private void grow() {
-        changeCapacity(3 * capacity / 2);
+        changeCapacity(capacity *= 1.5);
     }
 
     private void shrink() {
-        changeCapacity(capacity / 2);
+        changeCapacity(capacity /= 2);
     }
 
     private void changeCapacity(int newCapacity) {

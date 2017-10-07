@@ -1,4 +1,4 @@
-package seminar1.collections;
+package collections;
 
 import java.util.Iterator;
 
@@ -11,7 +11,9 @@ public class LinkedQueue<Item> implements IQueue<Item> {
 
     @Override
     public void enqueue(Item item) {
-        /* TODO: implement it */
+        Node<Item> tmp = tail;
+        tail = new Node<>(item, null);
+
     }
 
     @Override
