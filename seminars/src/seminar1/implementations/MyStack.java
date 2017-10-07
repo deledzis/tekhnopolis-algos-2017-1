@@ -4,7 +4,6 @@ import java.util.Iterator;
 import seminar1.collections.IStack;
 
 public class MyStack<T> implements IStack {
-    // TODO make it auto-expansible
     private int mTop;
     private int mCapacity;
     private Object mArray[];
@@ -24,10 +23,17 @@ public class MyStack<T> implements IStack {
         return this.mTop == - 1;
     }
 
+    private void expand() {
+        mCapacity *= 2;
+        Object[] newArray = new Object[mCapacity];
+        System.arraycopy(mArray, 0, newArray, 0, mArray.length);
+        mArray = newArray;
+    }
+
     @Override
     public void push(Object o) {
         if (isFull())
-            return;
+            expand();
         mArray[++mTop] = o;
     }
 
