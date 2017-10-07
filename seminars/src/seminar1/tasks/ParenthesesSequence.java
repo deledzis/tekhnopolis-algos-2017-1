@@ -23,7 +23,7 @@ public class ParenthesesSequence {
 
     // sequence = "()()" | "((((" | ")()(" | ...
     private static boolean isBalanced(String sequence) {
-        ArrayStack<Character> stack = new collections.ArrayStack<>();
+        ArrayStack<Character> stack = new ArrayStack<>();
         char c;
         for (int i = 0; i < sequence.length(); i++) {
             c = sequence.charAt(i);

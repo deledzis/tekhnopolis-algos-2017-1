@@ -92,7 +92,5 @@ public class ArrayStack<Item> implements collections.IStack<Item> {
         public Item next() {
             return elementData[--currentPosition];
         }
-
     }
-
 }
