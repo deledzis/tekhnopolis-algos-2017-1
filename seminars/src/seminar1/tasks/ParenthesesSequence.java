@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import seminar1.implementations.MyStack;
+import seminar1.collections.ArrayStack;
 
 /**
  * 1. пустая строка — правильная скобочная последовательность;
@@ -23,7 +23,7 @@ public class ParenthesesSequence {
 
     // sequence = "()()" | "((((" | ")()(" | ...
     private static boolean isBalanced(String sequence) {
-        MyStack<Character> stack = new MyStack<>(sequence.length());
+        ArrayStack<Character> stack = new ArrayStack<>();
         char c;
         for (int i = 0; i < sequence.length(); i++) {
             c = sequence.charAt(i);

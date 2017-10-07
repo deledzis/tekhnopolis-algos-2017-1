@@ -9,21 +9,33 @@ public class ArrayStack<Item> implements IStack<Item> {
 
     private Item[] elementData;
     private int size;
+    private int capacity;
 
     @SuppressWarnings("unchecked")
     public ArrayStack() {
-        this.elementData = (Item[]) new Object[DEFAULT_CAPACITY];
+        capacity = DEFAULT_CAPACITY;
+        this.elementData = (Item[]) new Object[capacity];
+        size = -1;
     }
 
     @Override
     public void push(Item item) {
-        /* TODO: implement it */
+        if (isFull()) {
+            grow();
+        }
+        elementData[++size] = item;
     }
 
     @Override
     public Item pop() {
-        /* TODO: implement it */
+        if (capacity / size > 4) {
+            shrink();
+        }
         return null;
+    }
+
+    private boolean isFull() {
+        return size() == capacity - 1;
     }
 
     @Override
@@ -37,19 +49,11 @@ public class ArrayStack<Item> implements IStack<Item> {
     }
 
     private void grow() {
-        /**
-         * TODO: implement it
-         * Если массив заполнился,
-         * то увеличить его размер в полтора раз
-         */
+        changeCapacity(3 * capacity / 2);
     }
 
     private void shrink() {
-        /**
-         * TODO: implement it
-         * Если количество элементов в четыре раза меньше,
-         * то уменьшить его размер в два раза
-         */
+        changeCapacity(capacity / 2);
     }
 
     private void changeCapacity(int newCapacity) {
