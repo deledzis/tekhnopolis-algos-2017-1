@@ -1,7 +1,9 @@
 import collections.ArrayStack;
 import collections.CyclicArrayQueue;
+import collections.IDeque;
 import collections.IQueue;
 import collections.IStack;
+import collections.LinkedDeque;
 import collections.LinkedQueue;
 import collections.LinkedStack;
 import collections.TwoStackQueue;
@@ -68,6 +70,53 @@ public class Main {
         }
         queue.enqueue(100);
         queue.print();
+
+        System.out.println("LinkedDeque");
+        IDeque<Integer> deque = new LinkedDeque<>();
+        for (int i = 0; i < 15; i++) {
+            deque.pushBack(i);
+        }
+        for (int i = 30; i > 10; i--) {
+            deque.pushFront(i);
+        }
+        deque.print();
+        for (int i = 0; i < 5; i++) {
+            deque.popBack();
+            deque.popFront();
+        }
+        deque.print();
+
+       /* //System.out.println("Iterator 1");
+        IncreasingIterator iterator1 = new IncreasingIterator(0, 5, 10);
+       *//* IncreasingIterator tmp1 = iterator1;
+        System.out.println("b4 1: " + tmp1.hasNext());
+        for (int i = 0; i < 20; i++) {
+            System.out.print(iterator1.next());
+            if (i < 19) {
+                System.out.print(" -> ");
+            }
+        }*//*
+        //System.out.println();
+        //System.out.println("Iterator 2");
+        IncreasingIterator iterator2 = new IncreasingIterator(2, 4, 10);
+        *//*IncreasingIterator tmp2 = iterator2;
+        System.out.println("b4 2: " + tmp2.hasNext());
+        for (int i = 0; i < 20; i++) {
+            System.out.print(iterator2.next());
+            if (i < 19) {
+                System.out.print(" -> ");
+            }
+        }*//*
+        System.out.println();
+        System.out.println("Merging iterator");
+        MergingIncreasingIterator increasingIterator = new MergingIncreasingIterator(iterator1, iterator2);
+        //System.out.println("1: " + tmp1.hasNext() + "; 2: " + tmp2.hasNext());
+        for (int i = 0; i < 30; i++) {
+            System.out.print(increasingIterator.next());
+            if (i < 19) {
+                System.out.print(" -> ");
+            }
+        }*/
 /*        System.out.println("LinkedStack");
         IStack<Integer> stack = new LinkedStack<>();
         for (int i = 0; i < 30; i++) {
