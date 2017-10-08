@@ -31,7 +31,7 @@ public class CyclicArrayQueue<Item> implements IQueue<Item> {
     public Item dequeue() {
         if (isEmpty())
             throw new NoSuchElementException("Queue is empty");
-        if (elementData.length / size() > 4)
+        if (elementData.length >= DEFAULT_CAPACITY && elementData.length / size() > 4)
             shrink();
         Item tmp = elementData[readPtr];
         elementData[readPtr] = null;
