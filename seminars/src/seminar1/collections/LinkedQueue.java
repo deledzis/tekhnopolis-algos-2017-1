@@ -1,6 +1,7 @@
 package collections;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class LinkedQueue<Item> implements IQueue<Item> {
 
@@ -11,15 +12,33 @@ public class LinkedQueue<Item> implements IQueue<Item> {
 
     @Override
     public void enqueue(Item item) {
-        Node<Item> tmp = tail;
-        tail = new Node<>(item, null);
-
+        Node<Item> tmp = head;
+        head = new Node<>(item, null);
+        if (isEmpty())
+            tail = head;
+        else
+            tmp.next = head;
+        size++;
     }
 
     @Override
     public Item dequeue() {
-        /* TODO: implement it */
-        return null;
+        if (isEmpty()) throw new NoSuchElementException("Queue underflow");
+        Item item = tail.item;
+        tail = tail.next;
+        size--;
+        if (isEmpty()) head = null;   // to avoid loitering
+        return item;
+    }
+
+    public void print() {
+        Node<Item> iterNode = tail;
+        System.out.print("Queue: ");
+        for (int i = 0; i < size; i++) {
+            System.out.print(iterNode.item + " ");
+            iterNode = iterNode.next;
+        }
+        System.out.println();
     }
 
     @Override
@@ -38,17 +57,19 @@ public class LinkedQueue<Item> implements IQueue<Item> {
     }
 
     private class LinkedQueueIterator implements Iterator<Item> {
+        private Node current = tail;
 
         @Override
         public boolean hasNext() {
-            /* TODO: implement it */
-            return false;
+            return current != null;
         }
 
         @Override
         public Item next() {
-            /* TODO: implement it */
-            return null;
+            if (!hasNext()) throw new NoSuchElementException();
+            Item item = (Item) current.item;
+            current = current.next;
+            return item;
         }
 
     }
