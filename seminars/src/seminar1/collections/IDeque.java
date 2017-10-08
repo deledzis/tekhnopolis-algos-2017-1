@@ -17,4 +17,5 @@ public interface IDeque<Item> extends Iterable<Item> {
 
     int size();
 
+    void print();
 }
