@@ -29,6 +29,11 @@ public class CyclicArrayQueue<Item> implements collections.IQueue<Item> {
         return 0;
     }
 
+    @Override
+    public void print() {
+
+    }
+
     private void grow() {
         /**
          * TODO: implement it
