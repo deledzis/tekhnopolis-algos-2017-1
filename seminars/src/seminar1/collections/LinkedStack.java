@@ -1,6 +1,7 @@
 package collections;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class LinkedStack<Item> implements IStack<Item> {
 
@@ -20,7 +21,7 @@ public class LinkedStack<Item> implements IStack<Item> {
 
     @Override
     public Item pop() {
-        if (isEmpty()) throw new NullPointerException("Stack is empty");
+        if (isEmpty()) throw new NoSuchElementException("Stack is empty");
         Item item = head.item;
         head = head.next;
         size--;
@@ -66,7 +67,7 @@ public class LinkedStack<Item> implements IStack<Item> {
 
         @Override
         public Item next() {
-            if (!hasNext()) throw new NullPointerException("Stack is empty");
+            if (!hasNext()) throw new NoSuchElementException("Stack is empty");
             Item item = current.item;
             current = current.next;
             return item;
