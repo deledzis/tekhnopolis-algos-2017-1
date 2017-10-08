@@ -13,4 +13,5 @@ public interface IQueue<Item> extends Iterable<Item> {
 
     int size();
 
+    void print();
 }

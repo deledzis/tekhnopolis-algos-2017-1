@@ -12,4 +12,6 @@ public interface IStack<Item> extends Iterable<Item> {
     boolean isEmpty();
 
     int size();
+
+    void print();
 }
