@@ -38,9 +38,9 @@ public class TwoStackQueue<Item> implements IQueue<Item> {
     }
 
     public void print() {
-        System.out.print("Stack 1: ");
+        System.out.print("1 ");
         stack1.print();
-        System.out.print("Stack 2: ");
+        System.out.print("2 ");
         stack2.print();
     }
 

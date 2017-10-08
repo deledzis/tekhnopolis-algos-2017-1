@@ -64,6 +64,7 @@ public class LinkedQueue<Item> implements IQueue<Item> {
             return current != null;
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         public Item next() {
             if (!hasNext()) throw new NoSuchElementException();
@@ -82,7 +83,7 @@ public class LinkedQueue<Item> implements IQueue<Item> {
             this.item = item;
         }
 
-        public Node(Item item, Node<Item> next) {
+        Node(Item item, Node<Item> next) {
             this.item = item;
             this.next = next;
         }

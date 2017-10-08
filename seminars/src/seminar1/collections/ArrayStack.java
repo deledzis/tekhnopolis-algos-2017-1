@@ -2,8 +2,9 @@ package collections;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-public class ArrayStack<Item> implements collections.IStack<Item> {
+public class ArrayStack<Item> implements IStack<Item> {
 
     private static final int DEFAULT_CAPACITY = 10;
 
@@ -28,9 +29,10 @@ public class ArrayStack<Item> implements collections.IStack<Item> {
 
     @Override
     public Item pop() {
-        if (capacity / size > 4) {
+        if (isEmpty())
+            throw new NoSuchElementException("Queue is empty");
+        if (capacity / size > 4)
             shrink();
-        }
         Item item = elementData[--size];
         elementData[size] = null;
         return item;
