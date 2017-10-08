@@ -8,30 +8,40 @@ public class TwoStackQueue<Item> implements IQueue<Item> {
     private IStack<Item> stack2;
 
     public TwoStackQueue() {
-        /* TODO: implement it */
+       stack1 = new ArrayStack<>();
+       stack2 = new ArrayStack<>();
     }
 
     @Override
     public void enqueue(Item item) {
-        /* TODO: implement it */
+       stack1.push(item);
     }
 
     @Override
     public Item dequeue() {
-        /* TODO: implement it */
-        return null;
+        if (stack2.isEmpty()) {
+            while (!stack1.isEmpty()) {
+                stack2.push(stack1.pop());
+            }
+        }
+        return stack2.pop();
     }
 
     @Override
     public boolean isEmpty() {
-        /* TODO: implement it */
-        return true;
+        return stack1.isEmpty() && stack2.isEmpty();
     }
 
     @Override
     public int size() {
-        /* TODO: implement it */
-        return 0;
+        return stack1.size() + stack2.size();
+    }
+
+    public void print() {
+        System.out.print("Stack 1: ");
+        stack1.print();
+        System.out.print("Stack 2: ");
+        stack2.print();
     }
 
     @Override
