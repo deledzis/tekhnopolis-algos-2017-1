@@ -1,67 +1,135 @@
 package collections;
 
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class CyclicArrayDeque<Item> implements collections.IDeque<Item> {
 
-    private Item[] elementData;
+    private static final int DEFAULT_CAPACITY = 10;
 
+    private Item[] elementData;
+    private int  back;
+    private int  front;
+
+    @SuppressWarnings("unchecked")
+    public CyclicArrayDeque() {
+        elementData = (Item[]) new Object[DEFAULT_CAPACITY];
+        front = back = 0;
+    }
+
+    @SuppressWarnings("unchecked")
     @Override
     public void pushFront(Item item) {
-        /* TODO: implement it */
+        back++;
+        if (isFull())
+            grow();
+        Item[] tmp = (Item[]) new Object[elementData.length];
+        System.arraycopy(elementData, 0, tmp, 0, size());
+        elementData = tmp;
+        System.arraycopy(elementData, front, elementData, front + 1, size() + 1 - front);
+        elementData[front] = item;
+        front = front % elementData.length;
     }
 
     @Override
     public void pushBack(Item item) {
-        /* TODO: implement it */
+        if (isFull())
+            grow();
+        elementData[back++] = item;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Item popFront() {
-        /* TODO: implement it */
-        return null;
+        if (isEmpty())
+            throw new NoSuchElementException("Deque is empty");
+
+        if (elementData.length >= DEFAULT_CAPACITY && elementData.length / size() > 4)
+            shrink();
+        Item[] tmp = (Item[]) new Object[elementData.length];
+        System.arraycopy(elementData, 1, tmp, 0, size() - 1);
+        elementData = tmp;
+        front++;
+        return elementData[front - 1];
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Item popBack() {
-        /* TODO: implement it */
-        return null;
+        if (isEmpty())
+            throw new NoSuchElementException("Deque is empty");
+
+        if (elementData.length >= DEFAULT_CAPACITY &&  size() / elementData.length > 4)
+            shrink();
+        Item[] tmp = (Item[]) new Object[elementData.length];
+        //System.arraycopy(elementData, front, tmp, front, size() - 1 - front);
+        for(int i = front; i < size() - 1; i++){
+            tmp[i] = elementData[i];
+        }
+        elementData = tmp;
+        back--;
+        return elementData[back];
     }
 
     @Override
     public boolean isEmpty() {
-        /* TODO: implement it */
-        return false;
+        return size() == 0;
+    }
+
+    private boolean isFull() {
+        return size() == elementData.length - 1;
     }
 
     @Override
     public int size() {
-        /* TODO: implement it */
-        return 0;
+        return back - front;
     }
 
     @Override
-    public void print() {}
+    public void print() {
+        System.out.print("Deque [S: " + size() + "; C: " + elementData.length + "]: ");
+        for (int i = 0; i < size(); i++) {
+            System.out.print(elementData[i] + " ");
+        }
+        System.out.println(" [F: " + front + "; B: " + back + "]");
+    }
+
+    public void printArray() {
+        System.out.println(Arrays.toString(elementData));
+    }
 
     private void grow() {
-        /**
-         * TODO: implement it
-         * Если массив заполнился,
-         * то увеличить его размер в полтора раз
-         */
+        changeCapacity((int) (elementData.length * 1.5));
     }
 
     private void shrink() {
-        /**
-         * TODO: implement it
-         * Если количество элементов в четыре раза меньше,
-         * то уменьшить его размер в два раза
-         */
+        changeCapacity(elementData.length / 2);
+    }
+
+    private void changeCapacity(int newCapacity) {
+        elementData = Arrays.copyOf(elementData, newCapacity);
     }
 
     @Override
     public Iterator<Item> iterator() {
-        /* TODO: implement it */
-        return null;
+        return new CyclicArrayDequeIterator();
+    }
+
+    private class CyclicArrayDequeIterator implements Iterator<Item> {
+
+        private int currentPosition = size();
+
+        @Override
+        public boolean hasNext() {
+            System.out.println("hasNext");
+            return currentPosition != 0;
+        }
+
+        @Override
+        public Item next() {
+            System.out.println("next");
+            return elementData[--currentPosition];
+        }
     }
 }
