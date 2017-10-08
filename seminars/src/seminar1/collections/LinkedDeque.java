@@ -5,9 +5,8 @@ import java.util.NoSuchElementException;
 
 public class LinkedDeque<Item> implements IDeque<Item> {
 
-    // -> [tail -> .. -> .. -> head] ->
-    private Node<Item> first;
-    private Node<Item> last;
+    private Node<Item> back;
+    private Node<Item> front;
     private int size;
 
     @Override
@@ -15,13 +14,14 @@ public class LinkedDeque<Item> implements IDeque<Item> {
         if (item == null)
             throw new NullPointerException();
 
-        Node<Item> newFirst = new Node<>(item);
-        if (first != null) {
-            newFirst.next = first;
-            first.previous = newFirst;
+        Node<Item> newLast = new Node<>(item);
+        if (front != null) {
+            newLast.previous = front;
+            front.next = newLast;
         }
-        first = newFirst;
-        if (last == null) last = first;
+        front = newLast;
+        if (back == null) back = front;
+
         size++;
     }
 
@@ -30,13 +30,14 @@ public class LinkedDeque<Item> implements IDeque<Item> {
         if (item == null)
             throw new NullPointerException();
 
-        Node<Item> newLast = new Node<>(item);
-        if (last != null) {
-            newLast.previous = last;
-            last.next = newLast;
+        Node<Item> newFirst = new Node<>(item);
+        if (back != null) {
+            newFirst.next = back;
+            back.previous = newFirst;
         }
-        last = newLast;
-        if (first == null) first = last;
+        back = newFirst;
+        if (front == null) front = back;
+
         size++;
     }
 
@@ -45,12 +46,12 @@ public class LinkedDeque<Item> implements IDeque<Item> {
         if (isEmpty())
             throw new NoSuchElementException();
 
-        Node<Item> oldFirst = first;
-        first = first.next;
-        if (first == null)
-            last = null;
+        Node<Item> oldFirst = back;
+        back = back.next;
+        if (back == null)
+            front = null;
         else
-            first.previous = null;
+            back.previous = null;
         size--;
 
         return oldFirst.item;
@@ -61,12 +62,12 @@ public class LinkedDeque<Item> implements IDeque<Item> {
         if (isEmpty())
             throw new NoSuchElementException();
 
-        Node<Item> oldLast = last;
-        last = oldLast.previous;
-        if (last == null)
-            first = null;
+        Node<Item> oldLast = front;
+        front = oldLast.previous;
+        if (front == null)
+            back = null;
         else
-            last.next = null;
+            front.next = null;
         size--;
 
         return oldLast.item;
@@ -74,7 +75,7 @@ public class LinkedDeque<Item> implements IDeque<Item> {
 
     @Override
     public boolean isEmpty() {
-        return first == null;
+        return back == null;
     }
 
     @Override
@@ -84,7 +85,7 @@ public class LinkedDeque<Item> implements IDeque<Item> {
 
     @Override
     public void print() {
-        Node<Item> iterNode = first;
+        Node<Item> iterNode = back;
         System.out.print("Deque: ");
         for (int i = 0; i < size; i++) {
             System.out.print(iterNode.item);
