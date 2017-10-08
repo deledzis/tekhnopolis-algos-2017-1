@@ -40,6 +40,9 @@ public class CyclicArrayDeque<Item> implements collections.IDeque<Item> {
         return 0;
     }
 
+    @Override
+    public void print() {}
+
     private void grow() {
         /**
          * TODO: implement it
