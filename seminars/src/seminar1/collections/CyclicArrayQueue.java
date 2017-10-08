@@ -11,14 +11,12 @@ public class CyclicArrayQueue<Item> implements IQueue<Item> {
     private Item[] elementData;
     private int readPtr;
     private int writePtr;
-    private int capacity;
 
     @SuppressWarnings("unchecked")
     public CyclicArrayQueue() {
         readPtr = 0;
         writePtr = 0;
-        capacity = DEFAULT_CAPACITY;
-        elementData = (Item[]) new Object[capacity];
+        elementData = (Item[]) new Object[DEFAULT_CAPACITY];
     }
 
     @Override
@@ -26,23 +24,23 @@ public class CyclicArrayQueue<Item> implements IQueue<Item> {
         if (isFull())
             grow();
         elementData[writePtr] = item;
-        writePtr = (writePtr + 1) % capacity;
+        writePtr = (writePtr + 1) % elementData.length;
     }
 
     @Override
     public Item dequeue() {
         if (isEmpty())
             throw new NoSuchElementException("Queue is empty");
-        if (capacity / size() > 4)
+        if (elementData.length / size() > 4)
             shrink();
         Item tmp = elementData[readPtr];
         elementData[readPtr] = null;
-        readPtr = (readPtr + 1) % capacity;
+        readPtr = (readPtr + 1) % elementData.length;
         return tmp;
     }
 
     private boolean isFull() {
-        return readPtr == (writePtr + 1 ) % capacity;
+        return readPtr == (writePtr + 1 ) % elementData.length;
     }
 
     @Override
@@ -52,7 +50,7 @@ public class CyclicArrayQueue<Item> implements IQueue<Item> {
 
     @Override
     public int size() {
-        return (capacity - readPtr + writePtr) % capacity;
+        return (elementData.length - readPtr + writePtr) % elementData.length;
     }
 
     @Override
@@ -65,11 +63,11 @@ public class CyclicArrayQueue<Item> implements IQueue<Item> {
     }
 
     private void grow() {
-        changeCapacity(capacity *= 1.5);
+        changeCapacity((int) (elementData.length * 1.5));
     }
 
     private void shrink() {
-        changeCapacity(capacity /= 2);
+        changeCapacity(elementData.length / 2);
     }
 
     private void changeCapacity(int newCapacity) {

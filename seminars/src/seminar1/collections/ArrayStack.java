@@ -10,12 +10,10 @@ public class ArrayStack<Item> implements IStack<Item> {
 
     private Item[] elementData;
     private int size;
-    private int capacity;
 
     @SuppressWarnings("unchecked")
     public ArrayStack() {
-        capacity = DEFAULT_CAPACITY;
-        this.elementData = (Item[]) new Object[capacity];
+        this.elementData = (Item[]) new Object[DEFAULT_CAPACITY];
         size = 0;
     }
 
@@ -30,8 +28,8 @@ public class ArrayStack<Item> implements IStack<Item> {
     @Override
     public Item pop() {
         if (isEmpty())
-            throw new NoSuchElementException("Queue is empty");
-        if (capacity / size > 4)
+            throw new NoSuchElementException("Array is empty");
+        if (elementData.length / size > 4)
             shrink();
         Item item = elementData[--size];
         elementData[size] = null;
@@ -51,7 +49,7 @@ public class ArrayStack<Item> implements IStack<Item> {
     }
 
     private boolean isFull() {
-        return size() == capacity;
+        return size() == elementData.length;
     }
 
     @Override
@@ -65,11 +63,11 @@ public class ArrayStack<Item> implements IStack<Item> {
     }
 
     private void grow() {
-        changeCapacity(capacity *= 1.5);
+        changeCapacity((int) (elementData.length * 1.5));
     }
 
     private void shrink() {
-        changeCapacity(capacity /= 2);
+        changeCapacity(elementData.length / 2);
     }
 
     private void changeCapacity(int newCapacity) {
