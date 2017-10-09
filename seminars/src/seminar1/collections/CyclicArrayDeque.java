@@ -8,35 +8,37 @@ public class CyclicArrayDeque<Item> implements collections.IDeque<Item> {
 
     private static final int DEFAULT_CAPACITY = 10;
 
-    private Item[] elementData;
-    private int  back;
-    private int  front;
+    private Item[]  elementData;
+    private int     back;
+    private int     front;
+    private int     capacity;
 
     @SuppressWarnings("unchecked")
     public CyclicArrayDeque() {
         elementData = (Item[]) new Object[DEFAULT_CAPACITY];
+        capacity = DEFAULT_CAPACITY;
         front = back = 0;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public void pushFront(Item item) {
-        back++;
-        if (isFull())
+        if (isFull()) {
             grow();
-        Item[] tmp = (Item[]) new Object[elementData.length];
-        System.arraycopy(elementData, 0, tmp, 0, size());
-        elementData = tmp;
-        System.arraycopy(elementData, front, elementData, front + 1, size() + 1 - front);
+        }
+        front = front == 0 ? capacity - 1 : front - 1;
         elementData[front] = item;
-        front = front % elementData.length;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void pushBack(Item item) {
-        if (isFull())
+        if (isFull()) {
+            System.out.println("size: " + size());
             grow();
-        elementData[back++] = item;
+        }
+        elementData[back] = item;
+        back = (back + 1) % capacity;
     }
 
     @SuppressWarnings("unchecked")
@@ -45,13 +47,16 @@ public class CyclicArrayDeque<Item> implements collections.IDeque<Item> {
         if (isEmpty())
             throw new NoSuchElementException("Deque is empty");
 
-        if (elementData.length >= DEFAULT_CAPACITY && elementData.length / size() > 4)
+        Item tmp = elementData[front];
+        elementData[front] = null;
+        front = (front + 1) % capacity;
+
+        if (capacity > DEFAULT_CAPACITY && capacity / size() > 4)
             shrink();
-        Item[] tmp = (Item[]) new Object[elementData.length];
-        System.arraycopy(elementData, 1, tmp, 0, size() - 1);
-        elementData = tmp;
-        front++;
-        return elementData[front - 1];
+        else if (size() == 0)
+            front = back = 0;
+
+        return tmp;
     }
 
     @SuppressWarnings("unchecked")
@@ -60,16 +65,16 @@ public class CyclicArrayDeque<Item> implements collections.IDeque<Item> {
         if (isEmpty())
             throw new NoSuchElementException("Deque is empty");
 
-        if (elementData.length >= DEFAULT_CAPACITY &&  size() / elementData.length > 4)
+        Item tmp = elementData[back];
+        elementData[back] = null;
+        back = back == 0 ? capacity - 1 : back - 1;
+
+        if (capacity > DEFAULT_CAPACITY && capacity / size() > 4)
             shrink();
-        Item[] tmp = (Item[]) new Object[elementData.length];
-        //System.arraycopy(elementData, front, tmp, front, size() - 1 - front);
-        for(int i = front; i < size() - 1; i++){
-            tmp[i] = elementData[i];
-        }
-        elementData = tmp;
-        back--;
-        return elementData[back];
+        else if (size() == 0)
+            front = back = 0;
+
+        return tmp;
     }
 
     @Override
@@ -78,18 +83,18 @@ public class CyclicArrayDeque<Item> implements collections.IDeque<Item> {
     }
 
     private boolean isFull() {
-        return size() == elementData.length - 1;
+        return size() == capacity - 1;
     }
 
     @Override
     public int size() {
-        return back - front;
+        return (capacity - front + back) % capacity;
     }
 
     @Override
     public void print() {
-        System.out.print("Deque [S: " + size() + "; C: " + elementData.length + "]: ");
-        for (int i = 0; i < size(); i++) {
+        System.out.print("Deque [S: " + size() + "; C: " + capacity + "]: ");
+        for (int i = front; i != back; i = (i + 1) % capacity) {
             System.out.print(elementData[i] + " ");
         }
         System.out.println(" [F: " + front + "; B: " + back + "]");
@@ -99,16 +104,29 @@ public class CyclicArrayDeque<Item> implements collections.IDeque<Item> {
         System.out.println(Arrays.toString(elementData));
     }
 
+    @SuppressWarnings("unchecked")
     private void grow() {
-        changeCapacity((int) (elementData.length * 1.5));
+        System.out.println("before: " + capacity);
+        Item[] tmp = (Item[]) new Object[(int) (capacity * 1.5)];
+        for (int i = 0; i < capacity; i++) {
+            int j = i + front;
+            tmp[j] = elementData[j % capacity];
+        }
+        elementData = tmp;
+        capacity *= 1.5;
+        System.out.println("after: " + capacity);
     }
 
+    @SuppressWarnings("unchecked")
     private void shrink() {
-        changeCapacity(elementData.length / 2);
-    }
-
-    private void changeCapacity(int newCapacity) {
-        elementData = Arrays.copyOf(elementData, newCapacity);
+        Item[] tmp = (Item[]) new Object[capacity / 2];
+        for (int i = 0; i < size(); i++) {
+            tmp[i] = elementData[(i + front) % capacity];
+        }
+        elementData = tmp;
+        front = 0;
+        back = size() - 1;
+        capacity /= 2;
     }
 
     @Override
