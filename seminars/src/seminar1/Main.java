@@ -89,11 +89,17 @@ public class Main {
 
         System.out.println("CyclicArrayDeque");
         deque = new CyclicArrayDeque<>();
-        for (int i = 0; i < 45; i++) {
+        for (int i = 0; i < 10; i++) {
             deque.pushFront(i);
+            deque.pushBack(++i);
         }
-        deque.print();
-        for (int i = 30; i > 10; i--) {
+        ((CyclicArrayDeque) deque).printArray();
+        for (int i = 0; i < 5; i++) {
+            deque.popBack();
+            deque.popFront();
+            ((CyclicArrayDeque) deque).printArray();
+        }
+        /*for (int i = 30; i > 10; i--) {
             deque.pushBack(i);
         }
         deque.print();
@@ -101,7 +107,7 @@ public class Main {
             deque.popBack();
             deque.popFront();
         }
-        deque.print();
+        deque.print();*/
 
        /* //System.out.println("Iterator 1");
         IncreasingIterator iterator1 = new IncreasingIterator(0, 5, 10);
