@@ -1,4 +1,5 @@
 import collections.ArrayStack;
+import collections.CyclicArrayDeque;
 import collections.CyclicArrayQueue;
 import collections.IDeque;
 import collections.IQueue;
@@ -86,6 +87,22 @@ public class Main {
         }
         deque.print();
 
+        System.out.println("CyclicArrayDeque");
+        deque = new CyclicArrayDeque<>();
+        for (int i = 0; i < 45; i++) {
+            deque.pushFront(i);
+        }
+        deque.print();
+        for (int i = 30; i > 10; i--) {
+            deque.pushBack(i);
+        }
+        deque.print();
+        for (int i = 0; i < 5; i++) {
+            deque.popBack();
+            deque.popFront();
+        }
+        deque.print();
+
        /* //System.out.println("Iterator 1");
         IncreasingIterator iterator1 = new IncreasingIterator(0, 5, 10);
        *//* IncreasingIterator tmp1 = iterator1;
@@ -116,36 +133,6 @@ public class Main {
             if (i < 19) {
                 System.out.print(" -> ");
             }
-        }*/
-/*        System.out.println("LinkedStack");
-        IStack<Integer> stack = new LinkedStack<>();
-        for (int i = 0; i < 30; i++) {
-            stack.push(i);
-        }
-        for (int i : stack) {
-            System.out.print(i + " ");
-        }
-        System.out.println();
-
-        System.out.println();
-        System.out.println("LinkedQueue");
-        IQueue<Integer> queue = new LinkedQueue<>();
-        for (int i = 0; i < 20; i++) {
-            queue.enqueue(i);
-        }
-        for (int i : queue) {
-            System.out.print(i + " ");
-        }
-        System.out.println();
-
-        System.out.println();
-        System.out.println("TwoStackQueue");
-        queue = new TwoStackQueue<>();
-        for (int i = 0; i < 20; i++) {
-            queue.enqueue(i);
-        }
-        for (int i = 0; i < 20; i++) {
-            System.out.print(queue.dequeue() + " ");
         }*/
     }
 }
