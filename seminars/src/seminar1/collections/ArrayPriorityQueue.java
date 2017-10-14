@@ -87,9 +87,10 @@ public class ArrayPriorityQueue<Key extends Comparable<Key>> implements collecti
 
     private boolean greater(int i, int j) {
         return comparator == null
-                ? elementData[i].compareTo(elementData[j]) > 0
-                : comparator.compare(elementData[i], elementData[j]) > 0
-                ;
+                ?
+                    elementData[i].compareTo(elementData[j]) > 0
+                :
+                    comparator.compare(elementData[i], elementData[j]) > 0;
     }
 
     @Override

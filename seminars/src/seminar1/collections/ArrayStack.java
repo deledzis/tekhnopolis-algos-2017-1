@@ -8,44 +8,36 @@ public class ArrayStack<Item> implements IStack<Item> {
 
     private static final int DEFAULT_CAPACITY = 10;
 
-    private Item[] elementData;
-    private int size;
+    private Item[]  elementData;
+    private int     size;
 
     @SuppressWarnings("unchecked")
     public ArrayStack() {
-        this.elementData = (Item[]) new Object[DEFAULT_CAPACITY];
-        size = 0;
+        this.elementData    = (Item[]) new Object[DEFAULT_CAPACITY];
+        size                = 0;
     }
 
     @Override
     public void push(Item item) {
-        if (isFull()) {
-            grow();
-        }
+        if (isFull()) grow();
         elementData[size++] = item;
     }
 
     @Override
     public Item pop() {
-        if (isEmpty())
-            throw new NoSuchElementException("Array is empty");
-        if (elementData.length / size > 4)
-            shrink();
+        if (isEmpty()) throw new NoSuchElementException("Array is empty");
+
+        if (elementData.length / size > 4) shrink();
+
         Item item = elementData[--size];
         elementData[size] = null;
         return item;
     }
 
-    public Item peek() {
-        return elementData[size - 1];
-    }
-
     public void print() {
-        System.out.print("Stack: ");
-        for (int i = 0; i < size; i++) {
-            System.out.print(elementData[i] + " ");
-        }
-        System.out.println();
+        System.out.print("Stack [S: " + size + "; C: " + elementData.length + "]: [ ");
+        this.forEach(Item -> System.out.print(Item + " "));
+        System.out.println("]");
     }
 
     private boolean isFull() {

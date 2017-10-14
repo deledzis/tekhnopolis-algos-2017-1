@@ -5,8 +5,8 @@ import java.util.NoSuchElementException;
 
 public class LinkedStack<Item> implements IStack<Item> {
 
-    private Node<Item> head;
-    private int size;
+    private Node<Item>  head;
+    private int         size;
 
     public LinkedStack() {
         head = null;
@@ -22,24 +22,17 @@ public class LinkedStack<Item> implements IStack<Item> {
     @Override
     public Item pop() {
         if (isEmpty()) throw new NoSuchElementException("Stack is empty");
+
         Item item = head.item;
         head = head.next;
         size--;
         return item;
     }
 
-    public Item peek() {
-        return head.item;
-    }
-
     public void print() {
-        Node<Item> iterNode = head;
-        System.out.print("Stack: ");
-        for (int i = 0; i < size; i++) {
-            System.out.print(iterNode.item + " ");
-            iterNode = iterNode.next;
-        }
-        System.out.println();
+        System.out.print("Stack [S: " + size + "]: [");
+        this.forEach(Item -> System.out.print(" <- " + Item));
+        System.out.println("]");
     }
 
     @Override
@@ -68,11 +61,11 @@ public class LinkedStack<Item> implements IStack<Item> {
         @Override
         public Item next() {
             if (!hasNext()) throw new NoSuchElementException("Stack is empty");
+
             Item item = current.item;
             current = current.next;
             return item;
         }
-
     }
 
     private static class Node<Item> {

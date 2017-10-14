@@ -5,15 +5,15 @@ import java.util.NoSuchElementException;
 
 public class LinkedQueue<Item> implements IQueue<Item> {
 
-    // -> [tail -> .. -> .. -> head] ->
-    private Node<Item> head;
-    private Node<Item> tail;
-    private int size;
+    private Node<Item>  head;
+    private Node<Item>  tail;
+    private int         size;
 
     @Override
     public void enqueue(Item item) {
         Node<Item> tmp = head;
         head = new Node<>(item, null);
+
         if (isEmpty())
             tail = head;
         else
@@ -24,20 +24,17 @@ public class LinkedQueue<Item> implements IQueue<Item> {
     @Override
     public Item dequeue() {
         if (isEmpty()) throw new NoSuchElementException("Queue underflow");
+
         Item item = tail.item;
         tail = tail.next;
         size--;
-        if (isEmpty()) head = null;   // to avoid loitering
+        if (isEmpty()) head = null;
         return item;
     }
 
     public void print() {
-        Node<Item> iterNode = tail;
-        System.out.print("Queue: ");
-        for (int i = 0; i < size; i++) {
-            System.out.print(iterNode.item + " ");
-            iterNode = iterNode.next;
-        }
+        System.out.print("Queue:");
+        this.forEach(Item -> System.out.print(" <- " + Item));
         System.out.println();
     }
 
@@ -68,6 +65,7 @@ public class LinkedQueue<Item> implements IQueue<Item> {
         @Override
         public Item next() {
             if (!hasNext()) throw new NoSuchElementException();
+
             Item item = (Item) current.item;
             current = current.next;
             return item;
@@ -78,10 +76,6 @@ public class LinkedQueue<Item> implements IQueue<Item> {
     private static class Node<Item> {
         Item item;
         Node<Item> next;
-
-        public Node(Item item) {
-            this.item = item;
-        }
 
         Node(Item item, Node<Item> next) {
             this.item = item;

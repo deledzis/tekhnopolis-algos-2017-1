@@ -42,12 +42,32 @@ public class TwoStackQueue<Item> implements IQueue<Item> {
         stack1.print();
         System.out.print("2 ");
         stack2.print();
+        System.out.println();
     }
 
     @Override
     public Iterator<Item> iterator() {
-        /* TODO: implement it (optional) */
-        return null;
+        return new TwoStackQueueIterator();
     }
 
+    private class TwoStackQueueIterator implements Iterator<Item> {
+
+        private int position = !stack2.isEmpty() ? stack2.size() : stack1.size();
+
+        @Override
+        public boolean hasNext() {
+            if (position == 0) {
+                while (!stack1.isEmpty()) {
+                    stack2.push(stack1.pop());
+                }
+                position = stack2.size();
+            }
+            return position != 0;
+        }
+
+        @Override
+        public Item next() {
+            return stack2.pop();
+        }
+    }
 }

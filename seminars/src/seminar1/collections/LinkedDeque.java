@@ -5,9 +5,9 @@ import java.util.NoSuchElementException;
 
 public class LinkedDeque<Item> implements IDeque<Item> {
 
-    private Node<Item> back;
-    private Node<Item> front;
-    private int size;
+    private Node<Item>  back;
+    private Node<Item>  front;
+    private int         size;
 
     @Override
     public void pushFront(Item item) {
@@ -43,8 +43,7 @@ public class LinkedDeque<Item> implements IDeque<Item> {
 
     @Override
     public Item popFront() {
-        if (isEmpty())
-            throw new NoSuchElementException();
+        if (isEmpty()) throw new NoSuchElementException();
 
         Node<Item> oldFirst = back;
         back = back.next;
@@ -59,8 +58,7 @@ public class LinkedDeque<Item> implements IDeque<Item> {
 
     @Override
     public Item popBack() {
-        if (isEmpty())
-            throw new NoSuchElementException();
+        if (isEmpty()) throw new NoSuchElementException();
 
         Node<Item> oldLast = front;
         front = oldLast.previous;
@@ -85,15 +83,8 @@ public class LinkedDeque<Item> implements IDeque<Item> {
 
     @Override
     public void print() {
-        Node<Item> iterNode = back;
         System.out.print("Deque: ");
-        for (int i = 0; i < size; i++) {
-            System.out.print(iterNode.item);
-            if (i < size - 1) {
-                System.out.print(" -> ");
-            }
-            iterNode = iterNode.next;
-        }
+        this.forEach(Item -> System.out.print(" <-> " + Item));
         System.out.println();
     }
 
@@ -103,7 +94,7 @@ public class LinkedDeque<Item> implements IDeque<Item> {
     }
 
     private class LinkedDequeIterator implements Iterator<Item> {
-        private Node<Item> current;
+        private Node<Item> current = back;
 
         @Override
         public boolean hasNext() {

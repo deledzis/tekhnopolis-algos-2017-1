@@ -8,31 +8,31 @@ public class CyclicArrayQueue<Item> implements IQueue<Item> {
 
     private static final int DEFAULT_CAPACITY = 10;
 
-    private Item[] elementData;
-    private int readPtr;
-    private int writePtr;
+    private Item[]  elementData;
+    private int     readPtr;
+    private int     writePtr;
 
     @SuppressWarnings("unchecked")
     public CyclicArrayQueue() {
-        readPtr = 0;
-        writePtr = 0;
+        readPtr     = 0;
+        writePtr    = 0;
         elementData = (Item[]) new Object[DEFAULT_CAPACITY];
     }
 
     @Override
     public void enqueue(Item item) {
-        if (isFull())
-            grow();
+        if (isFull()) grow();
         elementData[writePtr] = item;
         writePtr = (writePtr + 1) % elementData.length;
     }
 
     @Override
     public Item dequeue() {
-        if (isEmpty())
-            throw new NoSuchElementException("Queue is empty");
+        if (isEmpty()) throw new NoSuchElementException("Queue is empty");
+
         if (elementData.length >= DEFAULT_CAPACITY && elementData.length / size() > 4)
             shrink();
+
         Item tmp = elementData[readPtr];
         elementData[readPtr] = null;
         readPtr = (readPtr + 1) % elementData.length;
@@ -55,11 +55,9 @@ public class CyclicArrayQueue<Item> implements IQueue<Item> {
 
     @Override
     public void print() {
-        System.out.print("Stack: ");
-        for (int i = readPtr; i < readPtr + size(); i++) {
-            System.out.print(elementData[i] + " ");
-        }
-        System.out.println();
+        System.out.print("Stack [S: " + size() + "; C: " + elementData.length + "]: [ ");
+        this.forEach(Item -> System.out.print(Item + " "));
+        System.out.println("]");
     }
 
     private void grow() {
@@ -81,11 +79,16 @@ public class CyclicArrayQueue<Item> implements IQueue<Item> {
 
     private class ArrayStackIterator implements Iterator<Item> {
 
-        private int currentPosition = size();
+        private int currentPosition = writePtr > readPtr ? writePtr : readPtr;
 
         @Override
         public boolean hasNext() {
-            return currentPosition != 0;
+            if (writePtr > readPtr) {
+                return currentPosition != readPtr;
+            }
+            else {
+                return currentPosition != writePtr;
+            }
         }
 
         @Override

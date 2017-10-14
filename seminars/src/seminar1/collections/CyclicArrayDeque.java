@@ -1,6 +1,5 @@
 package collections;
 
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -16,20 +15,20 @@ public class CyclicArrayDeque<Item> implements collections.IDeque<Item> {
 
     @SuppressWarnings("unchecked")
     public CyclicArrayDeque() {
-        elementData = (Item[]) new Object[DEFAULT_CAPACITY];
-        capacity = DEFAULT_CAPACITY;
-        front = 0;
-        back = 0;
-        size = 0;
+        elementData     = (Item[]) new Object[DEFAULT_CAPACITY];
+        capacity        = DEFAULT_CAPACITY;
+        front    = back = 0;
+        size            = 0;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public void pushFront(Item item) {
-        if (isFull()) {
-            grow();
-        }
-        front = front == 0 ? capacity - 1 : front - 1;
+        if (isFull()) grow();
+
+        front = front == 0
+                ? capacity - 1
+                : front - 1;
         elementData[front] = item;
         size++;
     }
@@ -37,9 +36,8 @@ public class CyclicArrayDeque<Item> implements collections.IDeque<Item> {
     @SuppressWarnings("unchecked")
     @Override
     public void pushBack(Item item) {
-        if (isFull()) {
-            grow();
-        }
+        if (isFull()) grow();
+
         elementData[back] = item;
         back = (back + 1) % capacity;
         size++;
@@ -48,8 +46,7 @@ public class CyclicArrayDeque<Item> implements collections.IDeque<Item> {
     @SuppressWarnings("unchecked")
     @Override
     public Item popFront() {
-        if (isEmpty())
-            throw new NoSuchElementException("Deque is empty");
+        if (isEmpty()) throw new NoSuchElementException("Deque is empty");
 
         front = (front + 1) % capacity;
         Item tmp = elementData[front];
@@ -67,8 +64,7 @@ public class CyclicArrayDeque<Item> implements collections.IDeque<Item> {
     @SuppressWarnings("unchecked")
     @Override
     public Item popBack() {
-        if (isEmpty())
-            throw new NoSuchElementException("Deque is empty");
+        if (isEmpty()) throw new NoSuchElementException("Deque is empty");
 
         Item tmp = elementData[back];
         elementData[back] = null;
@@ -99,42 +95,34 @@ public class CyclicArrayDeque<Item> implements collections.IDeque<Item> {
 
     @Override
     public void print() {
-        System.out.print("[S: " + size + "; C: " + capacity + "]: ");
-        for (int i = front; i != back; i = (i + 1) % capacity) {
-            System.out.print(elementData[i] + " ");
-        }
-        System.out.println(" [F: " + front + "; B: " + back + "]");
-    }
-
-    public void printArray() {
-        System.out.print("[S: " + size + "; C: " + capacity + "]: ");
-        System.out.print(Arrays.toString(elementData));
-        System.out.println(" [F: " + front + "; B: " + back + "]");
+        System.out.print("[S: " + size + "; C: " + capacity + "]: [ ");
+        this.forEach(Item -> System.out.print(Item + " "));
+        System.out.println("] [F: " + front + "; B: " + back + "]");
     }
 
     @SuppressWarnings("unchecked")
     private void grow() {
-        Item[] tmp = (Item[]) new Object[(int) (capacity * 1.5)];
-        for (int i = 0; i < capacity; i++) {
-            int j = i + front;
-            tmp[i] = elementData[j % capacity];
+        Item[] tmp  = (Item[]) new Object[(int) (capacity * 1.5)];
+        for (int i  = 0; i < capacity; i++) {
+            int j   = i + front;
+            tmp[i]  = elementData[j % capacity];
         }
         elementData = tmp;
-        front = 0;
-        back = capacity;
-        capacity *= 1.5;
+        front       = 0;
+        back        = capacity;
+        capacity    *= 1.5;
     }
 
     @SuppressWarnings("unchecked")
     private void shrink() {
-        Item[] tmp = (Item[]) new Object[capacity / 2];
-        for (int i = 0; i < size; i++) {
-            tmp[i] = elementData[(i + front) % capacity];
+        Item[] tmp     = (Item[]) new Object[capacity / 2];
+        for (int i  = 0; i < size; i++) {
+            tmp[i]  = elementData[(i + front) % capacity];
         }
         elementData = tmp;
-        front = 0;
-        back = size - 1;
-        capacity /= 2;
+        front       = 0;
+        back        = size - 1;
+        capacity    /= 2;
     }
 
     @Override
@@ -144,18 +132,21 @@ public class CyclicArrayDeque<Item> implements collections.IDeque<Item> {
 
     private class CyclicArrayDequeIterator implements Iterator<Item> {
 
-        private int currentPosition = size;
+        private int currentPosition = front > back ? front - 1 : front;
 
         @Override
         public boolean hasNext() {
-            System.out.println("hasNext");
-            return currentPosition != 0;
+            if (front > back) {
+                return currentPosition != back - 1;
+            }
+            else {
+                return currentPosition != back;
+            }
         }
 
         @Override
         public Item next() {
-            System.out.println("next");
-            return elementData[--currentPosition];
+            return elementData[currentPosition = (currentPosition + 1) % capacity];
         }
     }
 }
