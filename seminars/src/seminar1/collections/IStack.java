@@ -1,4 +1,4 @@
-package seminar1.collections;
+package collections;
 
 /**
  * LIFO — Last In First Out
@@ -12,4 +12,6 @@ public interface IStack<Item> extends Iterable<Item> {
     boolean isEmpty();
 
     int size();
+
+    void print();
 }

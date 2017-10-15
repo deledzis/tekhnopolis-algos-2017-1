@@ -1,4 +1,4 @@
-package seminar1.iterators;
+package iterators;
 
 import java.util.Comparator;
 import java.util.Iterator;
@@ -15,7 +15,7 @@ import java.util.Iterator;
  */
 public class MergingPeekingIncreasingIterator implements Iterator<Integer> {
 
-    private Comparator<PeekingIncreasingIterator> comparator = (p1, p2) -> p1.peek().compareTo(p2.peek());
+    private Comparator<iterators.PeekingIncreasingIterator> comparator = (p1, p2) -> p1.peek().compareTo(p2.peek());
 
     public MergingPeekingIncreasingIterator(IPeekingIterator... peekingIterator) {
         /* TODO: implement it */

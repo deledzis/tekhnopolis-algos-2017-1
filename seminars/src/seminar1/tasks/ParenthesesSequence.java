@@ -1,10 +1,10 @@
-package seminar1.tasks;
+package tasks;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import seminar1.collections.ArrayStack;
+import collections.ArrayStack;
 
 /**
  * 1. пустая строка — правильная скобочная последовательность;
@@ -29,8 +29,11 @@ public class ParenthesesSequence {
             c = sequence.charAt(i);
             if (c == LEFT_PAREN)
                 stack.push(c);
-            else if (!stack.isEmpty())
-                stack.pop();
+            else if (c == RIGHT_PAREN) {
+                if (stack.isEmpty() || stack.pop() != LEFT_PAREN) {
+                    return false;
+                }
+            }
             else
                 return false;
         }

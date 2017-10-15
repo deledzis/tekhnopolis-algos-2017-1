@@ -1,4 +1,4 @@
-package seminar1.tasks;
+package tasks;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
  * ( 1 + ( 5 * ( 4 * 5 ) ) )
  * ( 1 + ( 5 * 20 ) ) = 101
  * ( 1 + 100 ) = 101
- *
+ * ( 1 + ( 4 + 3 ) + ( ( ( 4 + 5 ) ) ) = .
  * 1 + ( 2 + 3 ) * 4 * 5 = 101
  * 1 + 5 * 4 * 5 = 101
  * 1 + 5 * 20 = 101

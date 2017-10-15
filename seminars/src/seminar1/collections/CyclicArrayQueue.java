@@ -1,53 +1,99 @@
-package seminar1.collections;
+package collections;
 
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class CyclicArrayQueue<Item> implements IQueue<Item> {
 
-    private Item[] elementData;
+    private static final int DEFAULT_CAPACITY = 10;
+
+    private Item[]  elementData;
+    private int     readPtr;
+    private int     writePtr;
+
+    @SuppressWarnings("unchecked")
+    public CyclicArrayQueue() {
+        readPtr     = 0;
+        writePtr    = 0;
+        elementData = (Item[]) new Object[DEFAULT_CAPACITY];
+    }
 
     @Override
     public void enqueue(Item item) {
-        /* TODO: implement it */
+        if (isFull()) grow();
+        elementData[writePtr] = item;
+        writePtr = (writePtr + 1) % elementData.length;
     }
 
     @Override
     public Item dequeue() {
-        /* TODO: implement it */
-        return null;
+        if (isEmpty()) throw new NoSuchElementException("Queue is empty");
+
+        if (elementData.length >= DEFAULT_CAPACITY && elementData.length / size() > 4)
+            shrink();
+
+        Item tmp = elementData[readPtr];
+        elementData[readPtr] = null;
+        readPtr = (readPtr + 1) % elementData.length;
+        return tmp;
+    }
+
+    private boolean isFull() {
+        return readPtr == (writePtr + 1 ) % elementData.length;
     }
 
     @Override
     public boolean isEmpty() {
-        /* TODO: implement it */
-        return false;
+        return readPtr == writePtr;
     }
 
     @Override
     public int size() {
-        /* TODO: implement it */
-        return 0;
+        return (elementData.length - readPtr + writePtr) % elementData.length;
+    }
+
+    @Override
+    public void print() {
+        System.out.print("Stack [S: " + size() + "; C: " + elementData.length + "]: [ ");
+        this.forEach(Item -> System.out.print(Item + " "));
+        System.out.println("]");
     }
 
     private void grow() {
-        /**
-         * TODO: implement it
-         * Если массив заполнился,
-         * то увеличить его размер в полтора раз
-         */
+        changeCapacity((int) (elementData.length * 1.5));
     }
 
     private void shrink() {
-        /**
-         * TODO: implement it
-         * Если количество элементов в четыре раза меньше,
-         * то уменьшить его размер в два раза
-         */
+        changeCapacity(elementData.length / 2);
+    }
+
+    private void changeCapacity(int newCapacity) {
+        elementData = Arrays.copyOf(elementData, newCapacity);
     }
 
     @Override
     public Iterator<Item> iterator() {
-        /* TODO: implement it */
-        return null;
+        return new ArrayStackIterator();
+    }
+
+    private class ArrayStackIterator implements Iterator<Item> {
+
+        private int currentPosition = writePtr > readPtr ? writePtr : readPtr;
+
+        @Override
+        public boolean hasNext() {
+            if (writePtr > readPtr) {
+                return currentPosition != readPtr;
+            }
+            else {
+                return currentPosition != writePtr;
+            }
+        }
+
+        @Override
+        public Item next() {
+            return elementData[--currentPosition];
+        }
     }
 }

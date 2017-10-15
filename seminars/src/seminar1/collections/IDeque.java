@@ -1,4 +1,4 @@
-package seminar1.collections;
+package collections;
 
 /**
  * LIFO + FIFO = Last/First In First Out
@@ -17,4 +17,5 @@ public interface IDeque<Item> extends Iterable<Item> {
 
     int size();
 
+    void print();
 }

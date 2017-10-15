@@ -1,26 +1,43 @@
-package seminar1.collections;
+package collections;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class LinkedStack<Item> implements IStack<Item> {
 
-    private Node<Item> head;
-    private int size;
+    private Node<Item>  head;
+    private int         size;
+
+    public LinkedStack() {
+        head = null;
+        size = 0;
+    }
 
     @Override
     public void push(Item item) {
-        /* TODO: implement it */
+        head = new Node<>(item, head);
+        size++;
     }
 
     @Override
     public Item pop() {
-        /* TODO: implement it */
-        return null;
+        if (isEmpty()) throw new NoSuchElementException("Stack is empty");
+
+        Item item = head.item;
+        head = head.next;
+        size--;
+        return item;
+    }
+
+    public void print() {
+        System.out.print("Stack [S: " + size + "]: [");
+        this.forEach(Item -> System.out.print(" <- " + Item));
+        System.out.println("]");
     }
 
     @Override
     public boolean isEmpty() {
-        return size == 0;
+        return size == 0 || head == null;
     }
 
     @Override
@@ -34,26 +51,28 @@ public class LinkedStack<Item> implements IStack<Item> {
     }
 
     private class LinkedStackIterator implements Iterator<Item> {
+        private Node<Item> current = head;
 
         @Override
         public boolean hasNext() {
-            /* TODO: implement it */
-            return false;
+            return current != null;
         }
 
         @Override
         public Item next() {
-            /* TODO: implement it */
-            return null;
-        }
+            if (!hasNext()) throw new NoSuchElementException("Stack is empty");
 
+            Item item = current.item;
+            current = current.next;
+            return item;
+        }
     }
 
     private static class Node<Item> {
         Item item;
         Node<Item> next;
 
-        public Node(Item item, Node<Item> next) {
+        Node(Item item, Node<Item> next) {
             this.item = item;
             this.next = next;
         }

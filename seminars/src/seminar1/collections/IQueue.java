@@ -1,4 +1,4 @@
-package seminar1.collections;
+package collections;
 
 /**
  * FIFO — First In First Out
@@ -13,4 +13,5 @@ public interface IQueue<Item> extends Iterable<Item> {
 
     int size();
 
+    void print();
 }
