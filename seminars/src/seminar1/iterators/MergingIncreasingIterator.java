@@ -16,36 +16,63 @@ public class MergingIncreasingIterator implements Iterator<Integer> {
 
     private IncreasingIterator first;
     private IncreasingIterator second;
+    private Integer currElementFromFirst;
+    private Integer currElementFromSecond;
+    private Integer elementToBeReturned;
+    private Integer iteratorToBeIterated;
+    private Boolean firstIteration;
 
     public MergingIncreasingIterator(IncreasingIterator first, IncreasingIterator second) {
         this.first = first;
         this.second = second;
-        /* TODO: implement it */
+        firstIteration = true;
     }
 
     @Override
     public boolean hasNext() {
-        return first.hasNext() || (second != null && second.hasNext());
+        return first.hasNext() || second.hasNext() || currElementFromFirst != null || currElementFromSecond != null;
     }
 
     @Override
     public Integer next() {
-        if (first.hasNext()) {
-            Integer ret = first.next();
-            if (second != null) {
-                IncreasingIterator tmp = second;
-                second = first;
-                first = tmp;
+        if (firstIteration) {
+            currElementFromFirst = first.next();
+            currElementFromSecond = second.next();
+            iteratorToBeIterated = currElementFromFirst <= currElementFromSecond
+                    ? 0
+                    : 1; // 0 is for the first iterator, 1 is for the second
+            firstIteration = false;
+        }
+        if (iteratorToBeIterated % 2 == 0) {
+            if (currElementFromSecond == null ||  currElementFromFirst <= currElementFromSecond) {
+                elementToBeReturned = currElementFromFirst;
+                if (first.hasNext()) {
+                    currElementFromFirst = first.next();
+                }
+                else {
+                    currElementFromFirst = null;
+                    iteratorToBeIterated++;
+                }
             }
-            return ret;
+            else {
+                iteratorToBeIterated++;
+            }
         }
         else {
-            if (second == null || !second.hasNext()) {
-                throw new NoSuchElementException();
+            if (currElementFromFirst == null || currElementFromSecond <= currElementFromFirst) {
+                elementToBeReturned = currElementFromSecond;
+                if (second.hasNext()) {
+                    currElementFromSecond = second.next();
+                }
+                else {
+                    currElementFromSecond = null;
+                    iteratorToBeIterated++;
+                }
             }
-            first = second;
-            second = null;
-            return second.next();
+            else {
+                iteratorToBeIterated++;
+            }
         }
+        return elementToBeReturned;
     }
 }
