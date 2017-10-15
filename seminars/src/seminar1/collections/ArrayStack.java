@@ -41,7 +41,7 @@ public class ArrayStack<Item> implements IStack<Item> {
     }
 
     private boolean isFull() {
-        return size() == capacity - 1;
+        return size() == elementData.length;
     }
 
     @Override
