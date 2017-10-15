@@ -7,7 +7,7 @@ import java.util.NoSuchElementException;
 public class ArrayStack<Item> implements IStack<Item> {
 
     private static final int DEFAULT_CAPACITY = 10;
-
+  
     private Item[]  elementData;
     private int     size;
 
@@ -41,7 +41,7 @@ public class ArrayStack<Item> implements IStack<Item> {
     }
 
     private boolean isFull() {
-        return size() == elementData.length;
+        return size() == capacity - 1;
     }
 
     @Override
