@@ -1,3 +1,5 @@
+import java.util.Iterator;
+
 import collections.ArrayStack;
 import collections.CyclicArrayDeque;
 import collections.CyclicArrayQueue;
@@ -8,14 +10,16 @@ import collections.LinkedDeque;
 import collections.LinkedQueue;
 import collections.LinkedStack;
 import collections.TwoStackQueue;
+import iterators.IncreasingIterator;
+import iterators.MergingIncreasingIterator;
 
 public class Main {
 
     public static void main(String[] args) {
-        myTests();
+        runTests();
     }
 
-    private static void myTests() {
+    private static void runTests() {
         System.out.println("ArrayStack");
         System.out.println("==========");
         testStack(new ArrayStack<>());
@@ -49,6 +53,14 @@ public class Main {
         System.out.println("CyclicArrayDeque");
         System.out.println("==========");
         testDeque(new CyclicArrayDeque<>());
+        System.out.println();
+
+        System.out.println("MergingIncreasingIterator");
+        System.out.println("==========");
+        testIterator(new MergingIncreasingIterator(
+                new IncreasingIterator(0, 5, 5),
+                new IncreasingIterator(4, 6, 10)
+        ));
         System.out.println();
     }
 
@@ -92,5 +104,11 @@ public class Main {
         }
 
         deque.print();
+    }
+
+    private static void testIterator(Iterator<Integer> iterator) {
+        iterator.forEachRemaining(x -> {
+            System.out.print(x + " -> ");
+        });
     }
 }
