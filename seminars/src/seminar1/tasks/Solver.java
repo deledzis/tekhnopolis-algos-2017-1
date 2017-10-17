@@ -8,7 +8,8 @@ import collections.ArrayStack;
 
 /**
  * ( 1 + ( ( 2 + 3 ) * ( 4 * 5 ) ) ) = 101
- * ( 1 + ( 5 * ( 4 * 5 ) ) ) ( 1 + ( 5 * 20 ) ) = 101
+ * ( 1 + ( 5 * ( 4 * 5 ) ) ) = 101
+ * ( 1 + ( 5 * 20 ) ) = 101
  * ( 1 + 100 ) = 101
  *
  * Считаем, что операции деления на ноль отсутствуют
@@ -17,56 +18,60 @@ public class Solver {
 
     private static final String QUIT = "q";
 
-    private static final char LEFT_PAREN   = '(';
-    private static final char RIGHT_PAREN  = ')';
-    private static final char PLUS         = '+';
-    private static final char MINUS        = '-';
-    private static final char TIMES        = '*';
-    private static final char DIVISION     = '/';
+    private static final String LEFT_PAREN   = "(";
+    private static final String RIGHT_PAREN  = ")";
+    private static final String PLUS         = "+";
+    private static final String MINUS        = "-";
+    private static final String TIMES        = "*";
+    private static final String DIVISION     = "/";
 
     private static ArrayStack<String>   stack;
-    private static String               output = "";
+    private static String               output;
 
-    private static double evaluate(String[] values) {
-        stack = new ArrayStack<>();
-
-        //stackSize = values.length;
-        // Double.valueOf(values[i])
-        return 0D;
+    public static void main(String[] args) {
+        try (BufferedReader lineReader = new BufferedReader(new InputStreamReader(System.in))) {
+            String sequence;
+            while (!QUIT.equals(sequence = lineReader.readLine())) {
+                String postfixExpression = infixToPostfix(sequence.split(" "));
+                String[] postfixSequence = postfixExpression.split(" ");
+                System.out.println(evaluate(postfixSequence));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public static String infixToPostfix(String[] values) {
-        for (int i = 0; i < values.length; i++) {
-            String val = values[i];
-            System.out.println(val);
+    private static String infixToPostfix(String[] values) {
+        stack = new ArrayStack<>();
+        output = "";
+        for (String val : values) {
             switch (val) {
-                case "+":
-                case "-":
-                    gotOper(val, 1);
-                    break;
-                case "*":
-                case "/":
-                    gotOper(val, 2);
-                    break;
-                case "(":
-                    stack.push(val);
-                    break;
-                case ")":
-                    gotParen();
-                    break;
-                default:
-                    output += val;
-                    break;
+            case PLUS:
+            case MINUS:
+                gotOper(val, 1);
+                break;
+            case TIMES:
+            case DIVISION:
+                gotOper(val, 2);
+                break;
+            case LEFT_PAREN:
+                stack.push(val);
+                break;
+            case RIGHT_PAREN:
+                gotParen();
+                break;
+            default:
+                output += val + " ";
+                break;
             }
         }
         while (!stack.isEmpty()) {
-            output = output + stack.pop();
+            output += stack.pop() + " ";
         }
-        System.out.println(output);
         return output;
     }
 
-    public static void gotOper(String opThis, int prec1) {
+    private static void gotOper(String opThis, int prec1) {
         while (!stack.isEmpty()) {
             String opTop = stack.pop();
             if (opTop.equals("(")) {
@@ -74,7 +79,7 @@ public class Solver {
                 break;
             } else {
                 int prec2;
-                if (opTop.equals("+") || opTop.equals("-"))
+                if (opTop.equals(PLUS) || opTop.equals(MINUS))
                     prec2 = 1;
                 else
                     prec2 = 2;
@@ -82,37 +87,61 @@ public class Solver {
                     stack.push(opTop);
                     break;
                 }
-                else output = output + opTop;
+                else output += opTop + " ";
             }
         }
         stack.push(opThis);
     }
 
-    public static void gotParen() {
+    private static void gotParen() {
         while (!stack.isEmpty()) {
             String chx = stack.pop();
             if (chx.equals("("))
                 break;
-            else output += chx;
+            else output += chx + " ";
         }
     }
 
-    public boolean isOperator(String value) {
-        return value.length() == 1 &&
-                (value.charAt(0) == LEFT_PAREN || value.charAt(0) == RIGHT_PAREN ||
-                 value.charAt(0) == PLUS || value.charAt(0) == MINUS ||
-                 value.charAt(0) == TIMES || value.charAt(0) == DIVISION);
-    }
+    private static double evaluate(String[] values) {
+        stack = new ArrayStack<>();
 
-    public static void main(String[] args) {
-        try (BufferedReader lineReader = new BufferedReader(new InputStreamReader(System.in))) {
-            String sequence;
-            stack = new ArrayStack<>();
-            while (!QUIT.equals(sequence = lineReader.readLine())) {
-                System.out.println(infixToPostfix(sequence.split(" ")));
+        for (String tmp : values) {
+            if (tmp.matches("[0-9]*"))
+                stack.push(tmp);
+            else
+            if (tmp.matches("[*-/+]")) {
+                switch (tmp) {
+                    case TIMES: {
+                        int firstOperand = Integer.parseInt(stack.pop());
+                        int secondOperand = Integer.parseInt(stack.pop());
+                        int result = secondOperand * firstOperand;
+                        stack.push("" + result);
+                        break;
+                    }
+                    case MINUS: {
+                        int firstOperand = Integer.parseInt(stack.pop());
+                        int secondOperand = Integer.parseInt(stack.pop());
+                        int result = secondOperand - firstOperand;
+                        stack.push("" + result);
+                        break;
+                    }
+                    case DIVISION: {
+                        int firstOperand = Integer.parseInt(stack.pop());
+                        int secondOperand = Integer.parseInt(stack.pop());
+                        int result = secondOperand / firstOperand;
+                        stack.push("" + result);
+                        break;
+                    }
+                    case PLUS: {
+                        int firstOperand = Integer.parseInt(stack.pop());
+                        int secondOperand = Integer.parseInt(stack.pop());
+                        int result = secondOperand + firstOperand;
+                        stack.push("" + result);
+                        break;
+                    }
+                }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+        return Double.valueOf(stack.pop());
     }
 }
