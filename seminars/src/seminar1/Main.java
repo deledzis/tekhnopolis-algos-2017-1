@@ -1,9 +1,11 @@
 import java.util.Iterator;
 
+import collections.ArrayPriorityQueue;
 import collections.ArrayStack;
 import collections.CyclicArrayDeque;
 import collections.CyclicArrayQueue;
 import collections.IDeque;
+import collections.IPriorityQueue;
 import collections.IQueue;
 import collections.IStack;
 import collections.LinkedDeque;
@@ -53,6 +55,11 @@ public class Main {
         System.out.println("CyclicArrayDeque");
         System.out.println("==========");
         testDeque(new CyclicArrayDeque<>());
+        System.out.println();
+
+        System.out.println("ArrayPriorityQueue");
+        System.out.println("==========");
+        testPriorityQueue(new ArrayPriorityQueue<>());
         System.out.println();
 
         System.out.println("MergingIncreasingIterator");
@@ -106,9 +113,18 @@ public class Main {
         deque.print();
     }
 
+    private static void testPriorityQueue(IPriorityQueue<Integer> priorityQueue) {
+        for (int i = 0; i < 30; i++)
+            priorityQueue.add(i);
+
+        /*for (int i = 0; i < 5; i++)
+            priorityQueue.extractMin();
+
+        priorityQueue.add(100);
+        priorityQueue.print();*/
+    }
+
     private static void testIterator(Iterator<Integer> iterator) {
-        iterator.forEachRemaining(x -> {
-            System.out.print(x + " -> ");
-        });
+        iterator.forEachRemaining(x -> System.out.print(x + ","));
     }
 }
