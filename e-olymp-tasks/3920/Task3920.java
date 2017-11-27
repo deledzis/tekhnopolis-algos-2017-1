@@ -20,6 +20,6 @@ public class Task3920 {
     }
 
     private static int gcd(int a, int b) {
-        return b == 0 ? a : gcd(b, a % b);
+        return b == 0 ? Math.abs(a) : gcd(b, a % b);
     }
 }
