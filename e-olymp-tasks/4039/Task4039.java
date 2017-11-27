@@ -1,3 +1,5 @@
+import collections.ArrayPriorityQueue;
+
 /**
  * Хипуй!
  * В этой задаче вам необходимо организовать структуру данных Heap для хранения целых чисел, над которой определены следующие операции:
@@ -14,5 +16,28 @@
  */
 public class Task4039 {
     public static void main(String[] args) {
+        ArrayPriorityQueue<Integer> arrayPriorityQueue = new ArrayPriorityQueue<>(Comparable::compareTo);
+
+        arrayPriorityQueue.add(69);
+        arrayPriorityQueue.add(65);
+        arrayPriorityQueue.add(83);
+        arrayPriorityQueue.add(89);
+        arrayPriorityQueue.add(81);
+        arrayPriorityQueue.add(85);
+        arrayPriorityQueue.add(69);
+        arrayPriorityQueue.add(83);
+        arrayPriorityQueue.add(84);
+        arrayPriorityQueue.add(73);
+        arrayPriorityQueue.add(79);
+        arrayPriorityQueue.add(78);
+
+        arrayPriorityQueue.print();
+
+        //print values
+        while (!arrayPriorityQueue.isEmpty()) {
+            System.out.print("min: " + arrayPriorityQueue.extractMin() + " -> ");
+            arrayPriorityQueue.print();
+        }
+
     }
 }
