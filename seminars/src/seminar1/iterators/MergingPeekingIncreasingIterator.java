@@ -17,11 +17,18 @@ public class MergingPeekingIncreasingIterator implements Iterator<Integer> {
 
     private Comparator<iterators.PeekingIncreasingIterator> comparator = (p1, p2) -> p1.peek().compareTo(p2.peek());
 
+    private Integer[] currElements;
+
     public MergingPeekingIncreasingIterator(IPeekingIterator... peekingIterator) {
-        /* TODO: implement it */
-//        for (int i = 0; i < peekingIterator.length; i++) {
-//            peekingIterator[i].hasNext();
-//        }
+        currElements = new Integer[peekingIterator.length];
+        for (int i = 0; i < peekingIterator.length; i++) {
+            if (peekingIterator[i].hasNext()) {
+                currElements[i] = (Integer) peekingIterator[i].peek();
+            }
+            else {
+                currElements[i] = null;
+            }
+        }
     }
 
     @Override

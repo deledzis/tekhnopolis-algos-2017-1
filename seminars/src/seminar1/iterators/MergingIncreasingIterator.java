@@ -1,7 +1,6 @@
 package iterators;
 
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 /**
  * Итератор возвращающий последовательность из двух возрастающих итераторов в порядке возрастания
@@ -39,8 +38,8 @@ public class MergingIncreasingIterator implements Iterator<Integer> {
             currElementFromFirst = first.next();
             currElementFromSecond = second.next();
             iteratorToBeIterated = currElementFromFirst <= currElementFromSecond
-                    ? 0
-                    : 1; // 0 is for the first iterator, 1 is for the second
+                    ? 0  // 0 is for the first iterator,
+                    : 1; // 1 is for the second
             firstIteration = false;
         }
         if (iteratorToBeIterated % 2 == 0) {
