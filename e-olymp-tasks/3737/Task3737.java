@@ -20,8 +20,9 @@ public class Task3737 {
         int count = in.nextInt();
         long[] numbers = new long[count];
 
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < count; i++) {
             numbers[i] = in.nextLong();
+        }
 
         System.out.println(isHeap(numbers)? "YES" : "NO");
     }
