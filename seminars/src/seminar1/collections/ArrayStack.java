@@ -17,6 +17,12 @@ public class ArrayStack<Item> implements IStack<Item> {
         size                = 0;
     }
 
+    @SuppressWarnings("unchecked")
+    public ArrayStack(int capacity) {
+        this.elementData    = (Item[]) new Object[capacity];
+        size                = 0;
+    }
+
     @Override
     public void push(Item item) {
         if (isFull()) grow();
@@ -32,6 +38,10 @@ public class ArrayStack<Item> implements IStack<Item> {
         Item item = elementData[--size];
         elementData[size] = null;
         return item;
+    }
+
+    public Item peek() {
+        return elementData[size - 1];
     }
 
     public void print() {
